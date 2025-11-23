@@ -1,0 +1,20 @@
+{% extends "store/layout.html" %}
+
+{% block body %}
+<h1>Order Summary</h1>
+{% if basket %}
+<ul>
+    {% for item in basket %}
+        <li>{{ item.quantity }} × Product {{ item.product_id }}</li>
+    {% endfor %}
+</ul>
+
+<form action="{% url 'order' %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Confirm Order">
+</form>
+
+{% else %}
+<p>Your basket is empty</p>
+{% endif %}
+{% endblock %}
