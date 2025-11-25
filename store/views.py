@@ -1,9 +1,46 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from .models import Product, Order, OrderItem
-# Create your views here.
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
 
+from .models import Product, Order, OrderItem
+from .forms import RegisterForm, LoginForm
+
+
+# Login Page 
+def loginPage(request):
+    if request.method == "POST":
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            return redirect("/store/products/")
+    else:
+        form = LoginForm()
+
+    return render(request, "store/login.html", {"form": form})
+
+
+#Registration Page 
+def registerPage(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = RegisterForm()
+
+    return render(request, "store/register.html", {"form": form})
+
+
+# Logout Functionality
+def logoutPage(request):
+    logout(request)
+    return redirect("login")
+
+
+#Order Page
 def orderPage(request):
     if request.method != "POST":
         basket = request.session.get("basket", [])

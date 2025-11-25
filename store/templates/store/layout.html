@@ -1,10 +1,63 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Accessories Shop</title>
+    <title>Mauva</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        nav.navbar a {
+            color: #ffffff !important;
+        }
+    </style>
 </head>
 <body>
-{% block body %}
-{% endblock %}
+
+{% if request.resolver_match.url_name != "login" %}
+<nav class="navbar navbar-expand-lg" style="background-color: #6b1fad;">
+<img src="{% static 'store/2.png' %}" 
+     alt="Logo" 
+     style="height:100px; width:auto; margin-left:10px;">
+
+
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto" style="margin-right: 80px;">
+
+    <li class="nav-item">
+        <a class="nav-link" style="font-size: 20px;" href="/store/products/">Products</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" style="font-size: 20px;" href="/store/basket/">Basket</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" style="font-size: 20px;" href="/store/order/">Order</a>
+    </li>
+
+    {% if request.user.is_authenticated %}
+    <li class="nav-item">
+        <a class="nav-link" style="font-size: 20px;" href="{% url 'logout' %}">Logout</a>
+    </li>
+{% else %}
+    <li class="nav-item">
+        <a class="nav-link" style="font-size: 20px;" href="{% url 'login' %}">Login</a>
+    </li>
+{% endif %}
+
+
+</ul>
+
+    </div>
+</nav>
+{% endif %}
+
+<div class="container mt-4">
+    {% block body %}
+    {% endblock %}
+</div>
+
 </body>
 </html>
+
