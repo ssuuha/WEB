@@ -74,3 +74,19 @@ def orderPage(request):
     request.session["basket"] = []
 
     return HttpResponseRedirect(reverse("order"))
+
+
+#All Products Page 
+def all_products(request):
+    products = Product.objects.all()
+     return render(request, "store/all_products.html", {
+        "products": products
+    })
+
+
+#Product Detail Page 
+def product_detail(request, product_id):
+     product = Product.objects.get(id=product_id)
+     return render(request, "store/product_detail.html", {
+        "product": product
+    })
