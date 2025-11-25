@@ -13,4 +13,10 @@ urlpatterns = [
 
     #Order
     path("order/", views.orderPage, name="order"),
+
+    #All Products
+    path("products/", views.all_products, name="all_products"),
+
+    #Product Details
+     path("products/<int:product_id>/", views.product_detail, name="product_detail"),
 ]
