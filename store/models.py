@@ -6,6 +6,7 @@ class Product(models.Model):
     name = models.CharField(max_length=64)
     price = models.IntegerField()
     description = models.CharField(max_length=200)
+    image_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.id}: {self.name}"
