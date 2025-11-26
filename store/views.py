@@ -79,7 +79,7 @@ def orderPage(request):
 #All Products Page 
 def all_products(request):
     products = Product.objects.all()
-     return render(request, "store/all_products.html", {
+    return render(request, "store/all_products.html", {
         "products": products
     })
 
