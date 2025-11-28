@@ -1,0 +1,87 @@
+{% extends "store/layout.html" %}
+
+{% block body %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4 text-purple">Your Shopping Basket</h2>
+    </div>
+</div>
+
+{% if basket_items %}
+<div class="row">
+    <div class="col-lg-9">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in basket_items %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                {% if item.product.image_url %}
+                                    <img src="{{ item.product.image_url }}" style="width: 50px; height: 50px; object-fit: cover;" class="rounded me-3">
+                                {% endif %}
+                                <strong>{{ item.product.name }}</strong>
+                            </div>
+                        </td>
+                        <td>{{ item.product.price }} SAR</td>
+                        
+                        <td style="width: 150px;">
+                            <form action="{% url 'update_basket' item.product.id %}" method="POST" class="d-flex">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm me-2">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                            </form>
+                        </td>
+                        
+                        <td class="fw-bold">{{ item.total_price }} SAR</td>
+                        
+                        <td>
+                            <a href="{% url 'remove_from_basket' item.product.id %}" class="text-danger">
+                                <i class="bi bi-trash"></i> Remove
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <a href="{% url 'empty_basket' %}" class="btn btn-outline-danger mt-3">Empty Basket</a>
+    </div>
+
+    <div class="col-lg-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Summary</h4>
+                <hr>
+                <div class="d-flex justify-content-between mb-3">
+                    <span>Total:</span>
+                    <strong class="fs-4 text-purple">{{ total_cost }} SAR</strong>
+                </div>
+                
+                <form action="{% url 'order' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-purple w-100 py-2">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div class="text-center py-5">
+    <h3>Your basket is empty</h3>
+    <a href="{% url 'all_products' %}" class="btn btn-purple mt-3">Continue Shopping</a>
+</div>
+{% endif %}
+
+{% endblock %}
